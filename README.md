@@ -36,6 +36,48 @@ Bytecode and symlinks are rejected as distribution drift.
 
 25 physical skills under `skills/`. `CP_DEPLOY_V_RETRIEVAL_INDEX_v1.json` is the retrieval authority and carries routing fields only -- module IDs, aliases and entry paths -- because it is read on every dispatch; per-file hashes live beside it in `DEPLOY_V_INTEGRITY_v1.json`. `DEPLOY_V_MANIFEST.json` and `DEPLOY_V_BASELINE.json` are regenerated from this exact tree.
 
+### Execution order and reruns
+
+The numbered layer on a module is a display grouping, not an execution order. CP-0 freezes the effective source set and selected work; the shared dependency plan then runs each producer before the consumers that use its accepted handoff. Reconciliation, navigation and memo publication use that same plan. A module may be shown in an earlier layer after a dependency-driven return, and it still runs at the current route occurrence with its current upstream hashes.
+
+Rerun the affected module and its downstream dependents when any of these occur:
+
+- CP-0 changes its source inventory, profile, selection, readiness, or accepted handoff.
+- A required upstream handoff is missing, stale, rejected, or has a changed content hash.
+- A later module identifies a factual gap that requires new source extraction or changes a blocked source gate.
+- A late CP-5/CP-6 challenge creates a new bounded research question.
+
+An ordinary late question does not rewrite CP-0 or restart unrelated branches. Preserve the run anchor, create or revise the bounded CP-DR brief, and rerun the named research consumer plus its dependents. The runtime reports the exact blocker instead of asking the user to rerun every module.
+
+### Physical modules and aliases
+
+Every command ID resolves to one physical `SKILL.md`. The current owners are:
+
+| Alias IDs | Physical owner |
+| --- | --- |
+| `CP-PARSE` | `CP-0` |
+| `CP-2C` | `CP-1A` |
+| `CP-1E` | `CP-1D` |
+| `CP-2B` | `CP-2A` |
+| `CP-2F` | `CP-2E` |
+| `CP-3A`, `CP-3B` | `CP-3` |
+| `CP-4A`, `CP-4B`, `CP-4D` | `CP-4` |
+| `CP-5A` | `CP-5` |
+| `CP-6A` | `CP-6` |
+| `CP-L20`, `CP-L23`, `CP-L30`, `CP-L40` | `CP-L10` |
+
+Aliases are retrieval names, not separate implementations or extra workflow steps. On every launch, resolve the requested ID against the current `CP_DEPLOY_V_RETRIEVAL_INDEX_v1.json`, require exactly one match, then read that owner's current `SKILL.md`. A stale, inaccessible, missing, or ambiguous index stops dispatch; do not scan sibling folders or use cached skill text as a fallback. An alias-only CP-0 selection is a migration error and must be replaced with its canonical owner while preserving the user's qualifiers.
+
+### Launch checklist
+
+1. Ground the host on the package root containing `skills/`, `CANON_SHARED.md`, and the retrieval index.
+2. Reopen the current retrieval index and verify its `build_id` before each launch.
+3. Resolve the exact command or alias to one physical owner and report the normalized command and current skill path.
+4. For a routed issuer run, start from the current accepted CP-0 context; for standalone CP-DR, use its complete brief without manufacturing CP-0.
+5. If a handoff is rejected, follow its concrete reason and rerun only the affected dependency path.
+
+The URL-bound launcher adds the same checks for a connector-backed folder and requires the connector-returned package and skill URLs to remain current. See `DEPLOY_V_COPILOT_MEMORY_PROMPT_URL_BOUND.md` when stable folder URLs are available; otherwise use the folder-grounded prompt.
+
 CP-3 always uses the maintained Sector RV workbook inside the enterprise
 environment and assumes it is current and relevant. It resolves the selected or
 configured enterprise reference, or finds it through the available enterprise

@@ -47,8 +47,8 @@
       "sha256": "c6e2ff14248da621eee3b1ea7319556246217072844a5bafbc427791f37f775e"
     },
     "README.md": {
-      "bytes": 4172,
-      "sha256": "dc43ed72f737a4b8550750d0bccb913f3153401329c44d9582f6bcd94696c568"
+      "bytes": 7233,
+      "sha256": "b53431a1be98054f97adbae30021faa6d1b3c2f51a9ae7d32fc2314fa5eae695"
     },
     "tests/test_module_workflow.py": {
       "bytes": 20093,
